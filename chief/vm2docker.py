@@ -8,6 +8,7 @@ import argparse
 import tempfile
 import time
 import docker
+print('DEBUG: Loading Filesystem.py')
 from filesystem import BaseImageGenerator
 from include import RESULTS_LOGGER
 from constants.agent import DEFAULT_AGENT_PORT

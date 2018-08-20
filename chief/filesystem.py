@@ -1,5 +1,4 @@
 __author__ = 'elubin'
-print('DEBUG: Loaded Filesystem.py')
 import os
 import glob
 import logging
@@ -7,8 +6,8 @@ import subprocess
 import tempfile
 import tarfile
 import re
+print('DEBUG: Loading PackageManager')
 from packagemanager.packagemanager import MultiRootPackageManager
-print('DEBUG: Loaded PackageManager')
 from dockerfile import DiffBasedDockerBuild, DockerBuild, DockerFile
 #from include import RESULTS_LOGGER
 from utils.utils import rm_rf, extract_tar
