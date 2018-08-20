@@ -48,12 +48,20 @@ class LinuxInfoParser(object):
 
 class BaseImageGenerator(object):
     def __init__(self, vm_socket, dclient, process_packages=True, cache=False, filter_deps=False, debug=False):
+        print('DEBUG: BaseImageGenerator: _init_')
         self.docker_client = dclient
+        print('DEBUG: self.docker_client = ' + dclient)
         self.process_packages = process_packages
+        print('DEBUG: self.process_packages = ' + process_packages)
         self.vm_socket = vm_socket
+        print('DEBUG: self.vm_socket = ' + vm_socket)
         self.cache = cache
+        print('DEBUG: self.cache = ' + cache)
         self.filter_deps = filter_deps
+        print('DEBUG: self.filter_deps = ' + filter_deps)
         self.debug = debug
+        print('DEBUG: self.debug = ' + debug)
+        print('DEBUG: *END* BaseImageGenerator: _init_'')
 
     def __enter__(self):
         self.temp_dir = tempfile.mkdtemp()
