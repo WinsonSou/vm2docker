@@ -97,6 +97,7 @@ class PackageManager(object):
         return self.UNINSTALL_CMD_FMT
 
     def install_uninstall(self, to_install, to_uninstall, path_to_list):
+        print('DEBUG: IN INSTALL_UNINSTALL LOOP')
         """
         Generate a file that will then be added to the docker image at the given path.
 
@@ -124,6 +125,7 @@ class PackageManager(object):
 
 
 class YumPackageManager(PackageManager):
+    print('DEBUG: IN PACKAGEMANAGER.PY --> IN YUMPACKAGEMANAGER')
     REPO_FILES = ['/etc/yum.conf', '/etc/yum.repos.d']
     CLEAN_CMD = 'yum clean all'
     INSTALL_CMD_FMT = 'yum -y install %s'
