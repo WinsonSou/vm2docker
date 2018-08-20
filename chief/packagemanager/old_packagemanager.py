@@ -49,7 +49,7 @@ class PackageManager(object):
         if self.vm_socket is not None:
             installed = self.vm_socket.get_installed()
         else:
-            print('Debug: PACKAGEMANAGER.PY')
+            print('debug: PACKAGE MANAGER.PY ')
             assert self.docker_client is not None
             repo, tag = self.image_repo_tag
             parent = DockerFile.format_image_name(repo, tag)
@@ -97,7 +97,6 @@ class PackageManager(object):
         return self.UNINSTALL_CMD_FMT
 
     def install_uninstall(self, to_install, to_uninstall, path_to_list):
-        print('DEBUG: IN INSTALL_UNINSTALL LOOP')
         """
         Generate a file that will then be added to the docker image at the given path.
 
@@ -125,13 +124,12 @@ class PackageManager(object):
 
 
 class YumPackageManager(PackageManager):
-    print('DEBUG: IN PACKAGEMANAGER.PY --> IN YUMPACKAGEMANAGER')
     REPO_FILES = ['/etc/yum.conf', '/etc/yum.repos.d']
     CLEAN_CMD = 'yum clean all'
     INSTALL_CMD_FMT = 'yum -y install %s'
     UNINSTALL_CMD_FMT = 'yum -y erase %s'
     OS_NAME = 'CENTOS'
-    #PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
+    PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
 
 # yum is protected, need to make sure to not remove anything that yum depends on
 #     [root@localhost vm2docker]# repoquery --requires --resolve yum
@@ -183,8 +181,7 @@ class DebianPackageManager(PackageManager):
     For debian-like systems aka Ubuntu
     http://kvz.io/blog/2007/08/03/restore-packages-using-dselectupgrade/
     """
-    #PACKAGE_BLACKLIST = {'linux-.*', 'grub-.*', 'dictionaries-common', 'wbritish', 'console-setup', 'ubuntu-minimal', 'resolvconf', 'kbd'}
-    PACKAGE_BLACKLIST = {'linux-.*', 'grub-.*', 'dictionaries-common', 'wbritish', 'console-setup', 'ubuntu-minimal', 'resolvconf', 'kbd', 'apt', 'apt-utils', 'cpio', 'cron', 'debconf-i18n', 'gnupg', 'gpgv', 'ifupdown', 'iproute2', 'iputils-ping', 'isc-dhcp-client', 'isc-dhcp-common', 'libapt-inst1.5', 'libapt-pkg4.12', 'libgdbm3', 'libnewt0.52', 'libpcre3', 'libpopt0', 'libprocps3', 'libreadline6', 'libssl1.0.0', 'libstdc++6', 'libudev1', 'libusb-0.1-4', 'locales', 'logrotate', 'net-tools', 'netbase', 'netcat-openbsd', 'procps', 'readline-common', 'rsyslog', 'ubuntu-keyring', 'udev', 'vim-common', 'vim-tiny', 'whiptail', 'adduser', 'base-files', 'base-passwd', 'bash', 'bsdutils', 'busybox-initramfs', 'coreutils', 'dash', 'debconf', 'debianutils', 'diffutils', 'dpkg', 'e2fslibs', 'e2fsprogs', 'findutils', 'gcc-4.8-base', 'gcc-4.9-base', 'grep', 'gzip', 'hostname', 'initscripts', 'insserv', 'kmod', 'libacl1', 'libattr1', 'libaudit-common', 'libaudit1', 'libblkid1', 'libbz2-1.0', 'libc-bin', 'libc6', 'libcap2', 'libcomerr2', 'libdb5.3', 'libdebconfclient0', 'libgcc1', 'libkmod2', 'liblocale-gettext-perl', 'liblzma5', 'libmount1', 'libncurses5', 'libncursesw5', 'libnih-dbus1', 'libnih1', 'libpam-modules', 'libpam-modules-bin', 'libpam-runtime', 'libpam0g', 'libselinux1', 'libsemanage-common', 'libsemanage1', 'libsepol1', 'libslang2', 'libss2', 'libtext-charwidth-perl', 'libtext-iconv-perl', 'libtext-wrapi18n-perl', 'libtinfo5', 'libustr-1.0-1', 'libuuid1', 'login', 'lsb-base', 'mawk', 'module-init-tools', 'mount', 'mountall', 'multiarch-support', 'ncurses-base', 'ncurses-bin', 'passwd', 'perl-base', 'sed', 'sensible-utils', 'sysv-rc', 'sysvinit-utils', 'tar', 'tzdata', 'upstart', 'ureadahead', 'util-linux', 'zlib1g'}
+    PACKAGE_BLACKLIST = {'linux-.*', 'grub-.*', 'dictionaries-common', 'wbritish', 'console-setup', 'ubuntu-minimal', 'resolvconf', 'kbd'}
     REPO_FILES = ['/etc/apt/']
     #PACKAGE_WHITELIST = {'telnet'}
     # use dpkg -r to remove packages one at a time
@@ -193,7 +190,7 @@ class DebianPackageManager(PackageManager):
     CLEAN_CMD = 'apt-get clean'
     RELOAD_REPO_CMD = 'apt-get update'
     INSTALL_CMD_FMT = 'apt-get install -y %s'
-    UNINSTALL_CMD_FMT = 'apt-get remove --purge -y --force-yes %s'
+    UNINSTALL_CMD_FMT = 'apt-get remove --purge -y %s'
     OS_NAME = 'UBUNTU'
 
     def _process_get_installed(self, res):
