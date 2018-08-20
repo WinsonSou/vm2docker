@@ -86,9 +86,12 @@ class BaseImageGenerator(object):
         logging.debug("Searching for base image with repo %s, tag %s" % (repo, tag))
         repo_tag = DockerFile.format_image_name(repo, tag)
         print('Debug: find_base_image : ')
+        print(repo_tag)
         self.docker_client.pull(repo, tag)
         logging.debug(self.docker_client.images())
+        print(self.docker_client.images())
         candidate_image = [x for x in self.docker_client.images() if repo_tag in x['RepoTags']]
+        print(candidate_image)
         if len(candidate_image) == 1:
             return self.start_image_and_generate_container_id(repo_tag)
         else:
