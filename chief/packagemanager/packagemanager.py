@@ -130,7 +130,7 @@ class YumPackageManager(PackageManager):
     CLEAN_CMD = 'yum clean all'
     INSTALL_CMD_FMT = 'yum -y install %s'
     UNINSTALL_CMD_FMT = 'yum -y erase %s'
-    @UNINSTALL_CMD_FMT = 'yum -y erase %s'
+    #UNINSTALL_CMD_FMT = 'yum -y erase %s'
     OS_NAME = 'CENTOS'
     #PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
 
