@@ -131,6 +131,7 @@ class BaseImageGenerator(object):
 
     def generate(self, vm_tag, run_locally=False, tar_options='-z', diff_tool=RSyncDiffTool, processes=True):
         # get the filesystem from the socket
+        print('DEBUG: filesystem.py: generate')
         new_vm_root = os.path.join(self.temp_dir, 'vm_root', '') # stupid trailing / hack
         logging.debug('Obtaining filesystem from socket connection')
         tar_path = self.vm_socket.get_filesystem(tar_options)

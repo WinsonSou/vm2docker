@@ -220,6 +220,7 @@ class ZypperPackageManager(PackageManager):
 
 class MultiRootPackageManager(object):
     def __init__(self, vm_socket, os, tag, docker_client, filter_package_deps=True):
+        print('DEBUG: MultiRootPackageManager: _init_')
         """
         base_image_identifier is a string likely combining repo:tag such as ubuntu:14.04 so we can execute the command
         that we need to in the given docker container
@@ -239,6 +240,7 @@ class MultiRootPackageManager(object):
         return False
 
     def prepare_vm(self):
+        print('DEBUG: MultiRootPackageManager: prepare_vm(self)')
         vm_installed = set(self.vm.get_installed())
         base_installed = set(self.base_image.get_installed())
 
