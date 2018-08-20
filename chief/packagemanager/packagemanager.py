@@ -140,7 +140,7 @@ class YumPackageManager(PackageManager):
     REPO_FILES = ['/etc/yum.conf', '/etc/yum.repos.d']
     CLEAN_CMD = 'yum clean all'
     INSTALL_CMD_FMT = 'yum -y install %s'
-    UNINSTALL_CMD_FMT = 'yum -y erase %s'
+    UNINSTALL_CMD_FMT = 'echo %s'
     OS_NAME = 'CENTOS'
     PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
 
