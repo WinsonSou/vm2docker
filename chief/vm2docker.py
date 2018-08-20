@@ -86,8 +86,11 @@ if __name__ == '__main__':
 
     client = docker.Client(base_url=DOCKER_HOST)
     tag_name = args.tag
+    print('DEBUG: vm2docker.py: starting CommunicationLayer')
     with CommunicationLayer(args.vm_ip_address, args.agent_port) as vm_socket:
+        print('DEBUG: vm2docker.py: BaseImageGenerator')
         with BaseImageGenerator(vm_socket, client, process_packages=args.packages, cache=args.cache, filter_deps=args.filter_deps, debug=args.debug) as image_gen:
+            print('DEBUG: vm2docker.py: image_gen.generate')
             image_gen.generate(tag_name, run_locally=args.run, tar_options=args.tar_options, diff_tool=args.diff_tool, processes=args.processes)
 
     logging.debug('Results written to %s' % path)
