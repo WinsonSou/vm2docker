@@ -61,7 +61,7 @@ class BaseImageGenerator(object):
         print('DEBUG: self.filter_deps = ' + filter_deps)
         self.debug = debug
         print('DEBUG: self.debug = ' + debug)
-        print('DEBUG: *END* BaseImageGenerator: _init_'')
+        print('DEBUG: *END* BaseImageGenerator: _init_')
 
     def __enter__(self):
         self.temp_dir = tempfile.mkdtemp()
