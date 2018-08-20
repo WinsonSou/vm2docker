@@ -25,12 +25,14 @@ class PackageManager(object):
     CACHED_FILES = {}
 
     def __init__(self, vm_socket=None, image_repo_tag=None, docker_client=None):
+        print('DEBUG: packagemanager.py: cls:PackageManager: _init_ ')
         assert vm_socket is not None or image_repo_tag is not None
         self.vm_socket = vm_socket
         self.image_repo_tag = image_repo_tag
         self.docker_client = docker_client
 
     def get_installed(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: get_installed')
         installed = self._get_installed()
         # filter out the blacklisted and white listed items
         if self.PACKAGE_WHITELIST is not None:
@@ -46,6 +48,7 @@ class PackageManager(object):
         return installed
 
     def _get_installed(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: _get_installed')
         if self.vm_socket is not None:
             installed = self.vm_socket.get_installed()
         else:
@@ -60,14 +63,17 @@ class PackageManager(object):
         return self._process_get_installed(installed)
 
     def _process_get_installed(self, res):
+        print('DEBUG: packagemanager.py: cls:PackageManager: _process_get_installed')
         return res
 
     def _get_installed_cmd(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: _get_installed_cmd')
         os = self.OS_NAME
         return getattr(constants.agent, '%s__GET_INSTALLED_CMD' % os)
 
     @staticmethod
     def package_manager(system):
+        print('DEBUG: packagemanager.py: cls:PackageManager: package_manager')
         if system == 'ubuntu':
             return DebianPackageManager
         elif system == 'centos':
@@ -78,24 +84,31 @@ class PackageManager(object):
             assert False, "Unidentified OS!"
 
     def __enter__(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: _enter_')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        print('DEBUG: packagemanager.py: cls:PackageManager: _exit_')
         return False
 
     def get_reload_repo_cmd(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: get_reload_repo_cmd')
         return self.RELOAD_REPO_CMD
 
     def get_clean_cmd(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: get_clean_cmd')
         return self.CLEAN_CMD
 
     def get_install_cmd_fmt(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: get_install_cmd_fmt')
         return self.INSTALL_CMD_FMT
 
     def get_uninstall_cmd_fmt(self):
+        print('DEBUG: packagemanager.py: cls:PackageManager: get_uninstall_cmd_fmt')
         return self.UNINSTALL_CMD_FMT
 
     def install_uninstall(self, to_install, to_uninstall, path_to_list):
+        print('DEBUG: packagemanager.py: cls:PackageManager: install_uninstall')
         """
         Generate a file that will then be added to the docker image at the given path.
 
@@ -119,6 +132,7 @@ class PackageManager(object):
     #         rm_rf(f)
 
     def get_dependencies(self, pkg):
+        print('DEBUG: packagemanager.py: cls:PackageManager: get_dependancies')
         return []
 
 
@@ -148,9 +162,11 @@ class YumPackageManager(PackageManager):
 # yum-plugin-fastestmirror-0:1.1.31-24.el7.noarch
 
     def _process_get_installed(self, res):
+        print('DEBUG: packagemanager.py: cls:YumPackageManager: _process_get_installed')
         return res.splitlines()
 
     def get_dependencies(self, pkg):
+        print('DEBUG: packagemanager.py: cls:YumPackageManager: get_dependencies')
         output = self.vm_socket.get_dependencies(pkg).splitlines()
         if output == '':
             return []
@@ -215,7 +231,7 @@ class ZypperPackageManager(PackageManager):
 
 class MultiRootPackageManager(object):
     def __init__(self, vm_socket, os, tag, docker_client, filter_package_deps=True):
-        print('DEBUG: MultiRootPackageManager: _init_')
+        print('DEBUG: packagemanager.py: cls:MultiRootPackageManager: _init_')
         """
         base_image_identifier is a string likely combining repo:tag such as ubuntu:14.04 so we can execute the command
         that we need to in the given docker container
@@ -227,15 +243,17 @@ class MultiRootPackageManager(object):
         self.filter_pkg_deps = filter_package_deps
 
     def __enter__(self):
+        print('DEBUG: packagemanager.py: cls:MultiRootPackageManager: _enter_')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        print('DEBUG: packagemanager.py: cls:MultiRootPackageManager: _exit_')
         self.base_image.__exit__(exc_type, exc_val, exc_tb)
         self.vm.__exit__(exc_type, exc_val, exc_tb)
         return False
 
     def prepare_vm(self):
-        print('DEBUG: MultiRootPackageManager: prepare_vm(self)')
+        print('DEBUG: packagemanager.py: cls:MultiRootPackageManager: prepare_vm')
         vm_installed = set(self.vm.get_installed())
         base_installed = set(self.base_image.get_installed())
 
