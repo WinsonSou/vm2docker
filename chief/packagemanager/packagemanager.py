@@ -49,7 +49,6 @@ class PackageManager(object):
         if self.vm_socket is not None:
             installed = self.vm_socket.get_installed()
         else:
-            print('Debug: PACKAGEMANAGER.PY')
             assert self.docker_client is not None
             repo, tag = self.image_repo_tag
             parent = DockerFile.format_image_name(repo, tag)
@@ -97,7 +96,6 @@ class PackageManager(object):
         return self.UNINSTALL_CMD_FMT
 
     def install_uninstall(self, to_install, to_uninstall, path_to_list):
-        print('DEBUG: IN INSTALL_UNINSTALL LOOP')
         """
         Generate a file that will then be added to the docker image at the given path.
 
@@ -125,15 +123,13 @@ class PackageManager(object):
 
 
 class YumPackageManager(PackageManager):
-    print('DEBUG: IN PACKAGEMANAGER.PY --> IN YUMPACKAGEMANAGER')
     REPO_FILES = ['/etc/yum.conf', '/etc/yum.repos.d']
     CLEAN_CMD = 'yum clean all'
     INSTALL_CMD_FMT = 'yum -y install %s'
     print('DEBUG: ABOUT TO RUN UNINSTALL_CMD_FMT')
-    UNINSTALL_CMD_FMT = 'echo %s'
-    #UNINSTALL_CMD_FMT = 'yum -y erase %s'
+    UNINSTALL_CMD_FMT = 'yum -y erase %s'
     OS_NAME = 'CENTOS'
-    #PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
+    PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
 
 # yum is protected, need to make sure to not remove anything that yum depends on
 #     [root@localhost vm2docker]# repoquery --requires --resolve yum
