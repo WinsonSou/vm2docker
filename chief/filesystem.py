@@ -82,25 +82,25 @@ class BaseImageGenerator(object):
         return confirm.strip() == ''
 
     def find_base_image(self, repo, tag):
-        print('Debug: find_base_image')
+        print('DEBUG: IN FIND_BASE_IMAGE_LOOP')
         logging.debug("Searching for base image with repo %s, tag %s" % (repo, tag))
         repo_tag = DockerFile.format_image_name(repo, tag)
-        print('Debug: find_base_image : ')
-        print(repo_tag)
+        print('DEBUG: BASE IMAGE IS : ' + repo_tag)
+        print('DEBUG: PULLING DOCKER IMAGE: ' + repo_tag)
         self.docker_client.pull(repo, tag)
         logging.debug(self.docker_client.images())
-        print(self.docker_client.images())
-        repo_tag = ('docker.io/'+ repo_tag)
-        print('Repo Tag is: ' + repo_tag)
-        candidate_image = [x for x in self.docker_client.images() if repo_tag in x['RepoTags']]
-        print(candidate_image)
+        #print(self.docker_client.images())
+        matching_repo_tag = ('docker.io/'+ repo_tag)
+        print('DEBUG: REPO_TAG IS  ' + matching_repo_tag)
+        candidate_image = [x for x in self.docker_client.images() if matching_repo_tag in x['RepoTags']]
+        #print(candidate_image)
         if len(candidate_image) == 1:
             return self.start_image_and_generate_container_id(repo_tag)
         else:
             return None  # TODO: this isn't good, need to manually generate base image with debootstrap
 
     def start_image_and_generate_container_id(self, repo_tag, command='echo FAKECOMMAND'):
-        print('start_image_and_generate_container_id')
+        print('DEBUG: IN start_image_and_generate_container_id LOOP')
         res = self.docker_client.create_container(repo_tag, command=command)
         container_id = res['Id']
         logging.debug('Container ID: %s' % container_id)
@@ -143,7 +143,7 @@ class BaseImageGenerator(object):
         tag = self.linux_info.get('VERSION_ID', self.linux_info.get('DISTRIB_RELEASE'))
         tag = self.transform_tag(repo, tag)
         container_id = self.find_base_image(repo, tag)
-        print(container_id)
+        print('DEBUG: CONTAINER ID IS: ' + container_id)
         assert container_id is not None
         base_tar_path = self.export_container_to_tar(container_id)
         self.extract_base_image_tar(base_tar_path)
