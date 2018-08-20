@@ -90,6 +90,7 @@ class BaseImageGenerator(object):
         self.docker_client.pull(repo, tag)
         logging.debug(self.docker_client.images())
         print(self.docker_client.images())
+        repo_tag = 'docker.io/centos:centos7'
         candidate_image = [x for x in self.docker_client.images() if repo_tag in x['RepoTags']]
         print(candidate_image)
         if len(candidate_image) == 1:
