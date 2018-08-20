@@ -131,7 +131,7 @@ class YumPackageManager(PackageManager):
     INSTALL_CMD_FMT = 'yum -y install %s'
     UNINSTALL_CMD_FMT = 'yum -y erase %s'
     OS_NAME = 'CENTOS'
-    PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
+    #PACKAGE_BLACKLIST = {'systemd.*', 'fakesystemd.*'}
 
 # yum is protected, need to make sure to not remove anything that yum depends on
 #     [root@localhost vm2docker]# repoquery --requires --resolve yum
